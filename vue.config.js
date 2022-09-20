@@ -4,7 +4,7 @@ const {
 module.exports = defineConfig({
   transpileDependencies: true,
   // 处理白屏问题
-  publicPath:"./",
+  publicPath: "./",
   devServer: {
     // 端口号，如果端口号被占用，会自动提升1
     port: 8888,
@@ -25,8 +25,30 @@ module.exports = defineConfig({
         pathRewrite: {
           ["^" + process.env.VUE_APP_BASE_API]: ''
         }
-      }
+      },
+      // 代理名称  ["^"+process.env.VUE_APP_BASE_API]
+      [process.env.VUE_APP_BASE_API1]: {
+        target: process.env.VUE_APP_SERVICE_URL1,
+        // 是否开启跨域
+        changOrigin: true,
+        // 重写路径
+        pathRewrite: {
+          ["^" + process.env.VUE_APP_BASE_API1]: ''
+        }
+      },
 
+
+      // 代理名称
+      // "/dev1-api": {
+      //   // 跨域地址
+      //   target: "http://localhost:4000/",
+      //   // 是否开启跨域
+      //   changeOrigin: true,
+      //   // 重写路径
+      //   pathRewrite: {
+      //     "^/dev1-api": ""
+      //   }
+      // }
 
       // 代理名称
       // "/dev-api": {
@@ -36,7 +58,7 @@ module.exports = defineConfig({
       //   changeOrigin: true,
       //   // 重写路径
       //   pathRewrite: {
-      //     "^dev-api": ""
+      //     "^/dev-api": ""
       //   }
       // }
     }

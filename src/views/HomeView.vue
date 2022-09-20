@@ -27,6 +27,17 @@ export default {
       .catch((err) => {
         console.log(err);
       });
+    // 请求
+    this.$axios({
+      url: process.env.VUE_APP_BASE_API1 + "/",
+      method: "GET",
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>
