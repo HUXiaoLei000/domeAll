@@ -23,19 +23,21 @@ module.exports = defineConfig({
         changOrigin: true,
         // 重写路径
         pathRewrite: {
-          ["^" + process.env.VUE_APP_BASE_API]: ''
+          ["^" + process.env.VUE_APP_BASE_API]: ""
         }
       },
-      // 代理名称  ["^"+process.env.VUE_APP_BASE_API]
-      [process.env.VUE_APP_BASE_API1]: {
-        target: process.env.VUE_APP_SERVICE_URL1,
-        // 是否开启跨域
-        changOrigin: true,
-        // 重写路径
-        pathRewrite: {
-          ["^" + process.env.VUE_APP_BASE_API1]: ''
-        }
-      },
+
+
+      // // 代理名称  ["^"+process.env.VUE_APP_BASE_API]
+      // [process.env.VUE_APP_BASE_API1]: {
+      //   target: process.env.VUE_APP_SERVICE_URL1,
+      //   // 是否开启跨域
+      //   changOrigin: true,
+      //   // 重写路径
+      //   pathRewrite: {
+      //     ["^" + process.env.VUE_APP_BASE_API1]: ''
+      //   }
+      // },
 
 
       // 代理名称

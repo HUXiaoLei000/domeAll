@@ -6,11 +6,13 @@ import store from "./store";
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import axios from "axios"
+// import axios from "axios"
 
-Vue.prototype.$axios = axios
+import "./utils/request"  // 引入封装，测试一下
 
-Vue.use(ElementUI); // 原理install方法
+// Vue.prototype.$axios = axios
+
+// Vue.use(ElementUI); // 原理install方法
 Vue.config.productionTip = false;
 
 
