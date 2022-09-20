@@ -18,5 +18,16 @@ export default {
   components: {
     HelloWorld,
   },
+  created() {
+    // 请求
+    this.$axios({
+      url:"/dev-api/",
+      method: "GET"
+    }).then(res=>{
+      console.log(res);
+    }).catch(err=>{
+      console.log(err);
+    })
+  },
 };
 </script>

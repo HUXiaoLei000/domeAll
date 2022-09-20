@@ -1,4 +1,6 @@
-const { defineConfig } = require("@vue/cli-service");
+const {
+  defineConfig
+} = require("@vue/cli-service");
 module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
@@ -10,6 +12,19 @@ module.exports = defineConfig({
     https: false,
     // 启动服务时自动打开浏览器访问
     open: true,
+    proxy: {
+      // 代理名称
+      "/dev-api": {
+        // 跨域地址
+        target: "http://localhost:3000/",
+        // 是否开启跨域
+        changOrigin: true,
+        // 重写路径
+        pathRewrite:{
+          "^dev-api":""
+        }
+      }
+    }
   },
   // 关闭格式检查
   lintOnSave: false,
