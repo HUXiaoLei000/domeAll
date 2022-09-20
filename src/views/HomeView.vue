@@ -2,10 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" />
-  <div>
-    Hello 
-    World
-  </div>
+    <div>Hello World</div>
   </div>
 </template>
 
@@ -21,13 +18,15 @@ export default {
   created() {
     // 请求
     this.$axios({
-      url:"/dev-api/",
-      method: "GET"
-    }).then(res=>{
-      console.log(res);
-    }).catch(err=>{
-      console.log(err);
+      url: process.env.VUE_APP_BASE_API + "/",
+      method: "GET",
     })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };
 </script>
