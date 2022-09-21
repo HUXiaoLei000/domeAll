@@ -12,7 +12,7 @@ import "./utils/request"  // 引入封装，测试一下
 
 // Vue.prototype.$axios = axios
 
-// Vue.use(ElementUI); // 原理install方法
+Vue.use(ElementUI);  // 原理install方法
 Vue.config.productionTip = false;
 
 
