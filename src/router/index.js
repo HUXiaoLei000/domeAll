@@ -6,7 +6,7 @@ import home from "../views/home/home.vue";
 Vue.use(VueRouter);
 
 const routes = [{
-    path: "/",
+    path: "/login",
     name: "login",
     component: login,
   },
@@ -14,7 +14,12 @@ const routes = [{
     path: "/home",
     name: "home",
     component: home,
-  }
+  },
+  {
+    path: "/",
+    name: "alays",
+    component:()=>import("../views/layd")
+  },
 ];
 
 const router = new VueRouter({

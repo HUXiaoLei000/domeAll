@@ -16,6 +16,9 @@ import {
 } from "element-ui"
 
 
+// 引入vuex的数据,如果文件夹里面是index文件可以省略
+import store from "../store/index"
+
 // 创建axios实例，调用后会返回axios（实例）对象
 const service = axios.create({
     // baseURL: "/dev-api/", // 基本路径
@@ -30,8 +33,14 @@ const service = axios.create({
 
 
 // 请求拦截  ，是为了添加token，错误拦截，成功后再请求
-
 service.interceptors.request.use(confing => {
+    // 从vuex里的state里面获取token，可以使用，但不建议
+    // const token = store.state.token
+    const token = store.getters.token
+    // 如果有tokende的话，就设置请求头，发送给用后台，必须使用后台返回的字段authorization
+    // "Bearer "是后台返回的数据开头，要加空格
+    if (token) confing.headers.authorization = "Bearer " + token
+
     return confing
 }, error => {
     return Promise.reject(error)
@@ -99,9 +108,10 @@ const request = (opi) => {
         //  删除不用的
         delete opi.data
     }
-    console.log(opi.proxy, "<=proxy");
+
     // 合并上面的公共地址，解决多个跨域的问题 axios 提供了公共的地址方法service.defaults.baseURL
     //  proxy 是api里的proxy传过来的数据
+    // console.log(opi.proxy, "<=proxy");
     //  如果传就使用opi.proxy ，如果不传就默认使用process.env.VUE_APP_BASE_API
     service.defaults.baseURL = opi.proxy || process.env.VUE_APP_BASE_API
 

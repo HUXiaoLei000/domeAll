@@ -20,10 +20,19 @@ import request from "../utils/request"
 
 // 简写  data:{username:'',password:''}
 //  data={} 默认值
-export const login = (data = {}) => {
+export const login = () => {
     return request({
         url: "/admin/login",
         method: "POST",
-        data
+        
+    })
+}
+
+// 获取用户信息接口
+export const UserInfo = () => {
+    return request({
+        url: "/admin/getUserInfo",
+        method: "GET",
+       
     })
 }

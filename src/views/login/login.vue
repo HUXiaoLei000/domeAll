@@ -34,7 +34,9 @@
 </template>
 
 <script>
-import { login } from "../../api/user";
+// 第一种方法：方法使用
+// import { login, UserInfo } from "../../api/user";
+
 export default {
   name: "",
   components: {},
@@ -72,27 +74,55 @@ export default {
         //   return false;
         // }
         // 简写
+
         if (!valid) return;
         // 调用登录
-        this.handlelogin();
+        this.handleLogin();
       });
     },
+    // -------------------------------------------------------------
     // 登录的方法 必须需要使用async和await , try和catch
-    async handlelogin() {
-      // 成功走try
-      try {
-        const response = await login(this.ruleForm);
-        // 登录后查看返回值
-        console.log("response=>", response);
-        // 需要将token 存到vuex ,或者本地存储
-        // console.log("token=>", response.data.data.token);
-        console.log("token=>简化后", response.token); //  简化后
-        // 失败走cath
-      } catch (e) {
-        //   报错回复
-        console.log(e.message);
-      }
+    // 登录方法：简写
+    async handleLogin() {
+      // 调用vuex的数据，存储token
+      const token = await this.$store.dispatch("login", this.ruleForm);
+      // 如果没有token就return停止
+      if (!token) return;
+      // 调用vuex的数据，存储用户信息
+      const userInfo = await this.$store.dispatch("handleUserInfo");
+      // 如果没有userInfo就return停止
+      if (!userInfo) return;
+      //  登录提示
+      this.$message.success("登录成功");
+      //  跳转首页
+      this.$router.push("/");
     },
+
+    // async handlelogin() {
+    //   // 成功走try
+    //   try {
+    //     //  调用登录接口
+    //     const response = await login(this.ruleForm);
+    //     // console.log(response,"<=response");
+    //     // 登录后查看返回值
+    //     // console.log("response=>token", response.token);
+    //     // 需要将获取的token 存到vuex ,或者本地存储,调用vuex 的方法
+    //     this.$store.dispatch("DIS_SET_TOKEN", response.token);
+    //     // console.log("token=>", response.data.data.token);
+    //     // console.log("token=>简化后", response.token); ///  简化后
+    //     // 获取用户信息接口
+    //     const userInfo = await UserInfo();
+    //     console.log("userInfo",userInfo);
+    //      提示登录成功
+    //      this.$message.success("登录成功")
+    //       跳转到主页
+    //       this.$router.push("/")
+    //     // 失败走cath
+    //   } catch (e) {
+    //     //   报错回复
+    //     console.log(e.message);
+    //   }
+    // },
   },
 };
 </script>
