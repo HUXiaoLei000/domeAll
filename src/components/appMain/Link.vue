@@ -3,9 +3,9 @@
   <div>
     <!-- 面包屑导航 -->
     <el-breadcrumb separator="/">
-      <el-breadcrumb-item class="title" :to="{ path: '/' }">{{
-        RouteNavigation
-      }}</el-breadcrumb-item>
+      <el-breadcrumb-item class="title" :to="{ path: '/' }">
+         {{RouteNavigation}}
+      </el-breadcrumb-item>
     </el-breadcrumb>
   </div>
 </template>
@@ -18,7 +18,7 @@ export default {
     return {};
   },
   computed: {
-    //   获取路由地址
+    //  获取路由地址
     RouteNavigation() {
       return this.$route.meta?.title;
     },
