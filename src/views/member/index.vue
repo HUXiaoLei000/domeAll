@@ -2,20 +2,25 @@
 <template>
   <div>
     <!-- 头部搜索 -->
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+    <el-form
+      :inline="true"
+      ref="ResetAll"
+      :model="formInline"
+      class="demo-form-inline"
+    >
       <!-- 会员卡号 -->
-      <el-form-item>
+      <el-form-item prop="cardNum">
         <el-input
           v-model="formInline.cardNum"
           placeholder="会员卡号"
         ></el-input>
       </el-form-item>
       <!-- 会员名称 -->
-      <el-form-item>
+      <el-form-item prop="name">
         <el-input v-model="formInline.name" placeholder="会员名称"></el-input>
       </el-form-item>
       <!-- 支付方式 -->
-      <el-form-item>
+      <el-form-item prop="payType">
         <el-select v-model="formInline.payType" placeholder="支付方式">
           <el-option
             v-for="(item, index) in payType"
@@ -26,7 +31,7 @@
         </el-select>
       </el-form-item>
       <!-- 日期 value-format="yyyy-MM-dd"转换正常时间 -->
-      <el-form-item>
+      <el-form-item prop="birthday">
         <el-date-picker
           v-model="formInline.birthday"
           type="date"
@@ -40,10 +45,10 @@
         <el-button type="primary" @click="onSubmit">查询</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="edit">编辑</el-button>
+        <el-button type="primary" @click="edit">新增</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button @click="Reset">重置</el-button>
+        <el-button @click="Reset('ResetAll')">重置</el-button>
       </el-form-item>
     </el-form>
     <!-- 表格 -->
@@ -93,6 +98,52 @@
       :total="total"
     >
     </el-pagination>
+    <!-- 对话框 -->
+
+    <el-dialog title="收货地址" :visible.sync="dialogFormVisible" width="520px" >
+      <el-form :model="form">
+        <el-form-item
+          label="活动名称"
+          :label-width="formLabelWidth"
+          style="width: 400px"
+        >
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="活动名称"
+          :label-width="formLabelWidth"
+          style="width: 400px"
+        >
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="活动名称"
+          :label-width="formLabelWidth"
+          style="width: 400px"
+        >
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="活动名称"
+          :label-width="formLabelWidth"
+          style="width: 400px"
+        >
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="活动区域" :label-width="formLabelWidth">
+          <el-select v-model="form.region" placeholder="请选择活动区域">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false"
+          >确 定</el-button
+        >
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -105,6 +156,15 @@ export default {
   components: {},
   data() {
     return {
+      // 对话框
+      form: {
+        name: "",
+        region: "",
+      },
+      // 对话框宽度
+      formLabelWidth: "120px",
+      // 对话框的显示隐藏
+      dialogFormVisible: false,
       // 页数
       page: 1,
       // 数量
@@ -148,21 +208,23 @@ export default {
       );
       this.total = total;
       this.tableData = rows;
-      // console.log(this.tableData, "数据1111111");
     },
     // 点击查询方法
     onSubmit(value) {
       console.log("submit!");
     },
 
-    // 编辑
+    // 新增
     edit() {
+      this.dialogFormVisible = !this.dialogFormVisible;
       console.log("edit");
     },
 
     // 重置
-    Reset() {
-      
+    Reset(Reset) {
+      // res定义的数据ResetAll传参
+      this.$refs[Reset].resetFields();
+      // this.$refs[Reset].resetFields();
       console.log("Reset");
     },
 
