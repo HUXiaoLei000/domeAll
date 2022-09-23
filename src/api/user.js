@@ -24,7 +24,6 @@ export const login = () => {
     return request({
         url: "/admin/login",
         method: "POST",
-        
     })
 }
 
@@ -33,6 +32,13 @@ export const UserInfo = () => {
     return request({
         url: "/admin/getUserInfo",
         method: "GET",
-       
+    })
+}
+
+// 退出登录接口
+export const logout = () => {
+    return request({
+        url: "/admin/logout",
+        method: "POST",
     })
 }

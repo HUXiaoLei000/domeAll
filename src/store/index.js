@@ -2,7 +2,8 @@ import Vue from "vue";
 import Vuex from "vuex";
 import {
   login,
-  UserInfo
+  UserInfo,
+  logout
 } from "../api/user"
 // 引入存储数据封装的方法
 import {
@@ -27,24 +28,24 @@ export default new Vuex.Store({
     },
     // 从getters返回出去，可以使用，但不建议直接从userInfo里面获取数据
     UserInfo(state) {
-      return state.userInfo
+      // console.log(state.UserInfo.name);
+      return state.UserInfo
     }
 
   },
   mutations: {
     // 定义数据方法赋值
     SET_TOKEN(state, token) {
-      console.log(222444);
-      state.toktn = token
+      state.token = token
       setToken(token)
-      console.log("同步1111", state.toktn);
     },
+
     // 存储用户信息
     SET_USER_INFO(state, UserInfo) {
-      console.log(55566);
       state.UserInfo = UserInfo
       setUserInfo(UserInfo)
-    }
+    },
+
   },
   actions: {
     // 解构赋值拿出来{commit}
@@ -62,7 +63,16 @@ export default new Vuex.Store({
     //   // 调用同步的方法
     //   commit("SET_USER_INFO", UserInfo)
     // },
-
+    // 退出登录
+    async logOutAdd({
+      commit
+    }) {
+      // 调用退出接口
+      const response = await logout()
+      commit("SET_TOKEN", "")
+      commit("SET_USER_INFO", "")
+      return response
+    },
     // 存储token
     async login({
       commit

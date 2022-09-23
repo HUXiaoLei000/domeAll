@@ -8,7 +8,8 @@ Vue.use(VueRouter);
 const routes = [{
     path: "/login",
     name: "login",
-    component: login,
+    // component: () => import("../views/login/login"),
+    component: login
   },
   {
     path: "/home",
@@ -17,8 +18,49 @@ const routes = [{
   },
   {
     path: "/",
-    name: "alays",
-    component:()=>import("../views/layd")
+    name: "layd",
+    redirect: "/index",
+    component: () => import("../views/layd"),
+    children: [{
+        path: "index",
+        name: "index",
+        component: () => import("../views/index"),
+        meta: {
+          title: "首页"
+        }
+      }, {
+        path: "/goods",
+        name: "goods",
+        component: () => import("../views/goods"),
+        meta: {
+          title: "商品管理"
+        }
+      },
+      {
+        path: "/stasff",
+        name: "stasff",
+        component: () => import("../views/stasff"),
+        meta: {
+          title: "员工管理"
+        }
+      },
+      {
+        path: "/member",
+        name: "member",
+        component: () => import("../views/member"),
+        meta: {
+          title: "会员管理"
+        }
+      },
+      {
+        path: "/supplier",
+        name: "supplier",
+        component: () => import("../views/supplier"),
+        meta: {
+          title: "供应商管理"
+        }
+      },
+    ]
   },
 ];
 

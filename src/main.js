@@ -8,15 +8,17 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 // import axios from "axios"
 
-import "./utils/request"  // 引入封装，测试一下
+import "./utils/request" // 引入封装，测试一下
 
+// 页面权限鉴权
+import "./touterAll.js"
 // Vue.prototype.$axios = axios
 
-Vue.use(ElementUI);  // 原理install方法
+Vue.use(ElementUI); // 原理install方法
 Vue.config.productionTip = false;
 
 
-console.log("打印代理名称",process.env.VUE_APP_BASE_API);
+console.log("打印代理名称", process.env.VUE_APP_BASE_API);
 
 new Vue({
   router,
