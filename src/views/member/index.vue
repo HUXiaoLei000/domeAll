@@ -100,7 +100,7 @@
     </el-pagination>
     <!-- 对话框 -->
 
-<el-dialog :title="id==1?'编辑会员':'新增会员'" :visible.sync="dialogFormVisible" width="500px" >
+<el-dialog :title="id==2?'编辑会员':'新增会员'" :visible.sync="dialogFormVisible" width="500px" >
   <el-form :model="dialogFormParams" :rules="rules" ref="ResetAll1">
     <el-form-item label="会员卡号" :label-width="formLabelWidth" prop="cardNum"> 
       <el-input v-model="dialogFormParams.cardNum" autocomplete="off"></el-input>
@@ -218,7 +218,7 @@ export default {
     // 对话框确定
     determine() {
       // 获取会员列表数据 新增或者编辑
-      this.id == 1 ? this.getMemberList() : this.edit();
+      this.id == 2 ? this.getMemberList() : this.edit();
       // 对话框关闭
       this.dialogFormVisible = false;
       // 清空对话框内容
@@ -254,9 +254,15 @@ export default {
     // --------------------------------------------
     // 新增
     async edit() {
+      console.log(111111111);
+      // 清空对话框内容
+      this.Reset("ResetAll1");
       // 对话框标题切换
       this.id = 2;
       if (this.id == 2) {
+        // 对话框标题切换
+        this.id = 1;
+        console.log(this.id);
         try {
           // 对话框显示隐藏
           this.dialogFormVisible = !this.dialogFormVisible;
@@ -265,8 +271,6 @@ export default {
           const response = await MemberApi.addMember(this.dialogFormParams);
           // 获取会员列表数据
           this.getMemberList();
-          // 对话框标题切换
-          this.id = 1;
         } catch (e) {
           console.log(e.message);
         }
@@ -289,6 +293,9 @@ export default {
       // 对话框标题切换
       this.id = 1;
       if (this.id == 1) {
+        // 对话框标题切换
+        this.id = 2;
+        console.log(this.id);
         try {
           // 重新input赋值
           this.dialogFormParams = row;
@@ -296,8 +303,6 @@ export default {
           this.dialogFormVisible = !this.dialogFormVisible;
           // 编辑接口
           const response = await MemberApi.editMember(row.id, row);
-          // 对话框标题切换
-          this.id = 1;
         } catch (e) {
           console.log(e.message);
         }
