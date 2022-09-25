@@ -100,48 +100,40 @@
     </el-pagination>
     <!-- 对话框 -->
 
-    <el-dialog title="收货地址" :visible.sync="dialogFormVisible" width="520px" >
-      <el-form :model="form">
-        <el-form-item
-          label="活动名称"
-          :label-width="formLabelWidth"
-          style="width: 400px"
-        >
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item
-          label="活动名称"
-          :label-width="formLabelWidth"
-          style="width: 400px"
-        >
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item
-          label="活动名称"
-          :label-width="formLabelWidth"
-          style="width: 400px"
-        >
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item
-          label="活动名称"
-          :label-width="formLabelWidth"
-          style="width: 400px"
-        >
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域" :label-width="formLabelWidth">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"
-          >确 定</el-button
-        >
+<el-dialog :title="id==1?'编辑会员':'新增会员'" :visible.sync="dialogFormVisible" width="500px" >
+  <el-form :model="dialogFormParams" :rules="rules" ref="ResetAll1">
+    <el-form-item label="会员卡号" :label-width="formLabelWidth" prop="cardNum"> 
+      <el-input v-model="dialogFormParams.cardNum" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="会员姓名" :label-width="formLabelWidth" prop="name">
+      <el-input v-model="dialogFormParams.name" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="会员生日" :label-width="formLabelWidth" prop="birthday">
+      <el-input v-model="dialogFormParams.birthday" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="手机号码" :label-width="formLabelWidth" prop="phone">
+      <el-input v-model="dialogFormParams.phone" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="可用积分" :label-width="formLabelWidth" prop="integral"> 
+      <el-input v-model="dialogFormParams.integral" autocomplete="off"></el-input>
+    </el-form-item>
+
+    <el-form-item label="支付类型" :label-width="formLabelWidth" prop="payType">
+      <el-select v-model="dialogFormParams.payType" placeholder="请选择支付类型">
+        <el-option  v-for="(item, index) in payType" :key="index"  :label="item.name" :value="item.id"></el-option>
+       
+      </el-select>
+    </el-form-item>
+     <el-form-item label="会员地址" :label-width="formLabelWidth" prop="address">
+      <el-input type="textarea" v-model="dialogFormParams.address"></el-input>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="determine">确 定</el-button>
+  </div>
+</el-dialog>
+    
       </div>
     </el-dialog>
   </div>
@@ -156,6 +148,29 @@ export default {
   components: {},
   data() {
     return {
+      // 保存弹窗表单的数据
+      dialogFormParams: {
+        cardNum: "",
+        name: "",
+        payType: "",
+        address: "",
+        money: "",
+        integral: "",
+        phone: "",
+        birthday: "",
+      },
+      // 对话框验证正则
+      rules: {
+        cardNum: [
+          { required: true, message: "请输入会员卡号", trigger: "blur" },
+        ],
+        name: [{ required: true, message: "请输入会员名称", trigger: "blur" }],
+        payType: [
+          { required: true, message: "请输入支付类型", trigger: "change" },
+        ],
+      },
+      // 对话框标题切换
+      id: 1,
       // 对话框
       form: {
         name: "",
@@ -195,54 +210,133 @@ export default {
   },
   computed: {},
   created() {
-    // 获取数据
+    // 获取会员列表数据
     this.getMemberList();
   },
+  // ---------------------------------------------
   methods: {
+    // 对话框确定
+    determine() {
+      // 获取会员列表数据 新增或者编辑
+      this.id == 1 ? this.getMemberList() : this.edit();
+      // 对话框关闭
+      this.dialogFormVisible = false;
+      // 清空对话框内容
+      this.Reset("ResetAll1");
+    },
+    // -----------------------------------------
     //  获取会员列表信息
     async getMemberList() {
-      const { rows, total } = await MemberApi.getMemberList(
-        this.page,
-        this.size,
-        this.formInline
-      );
-      this.total = total;
-      this.tableData = rows;
+      try {
+        const { rows, total } = await MemberApi.getMemberList(
+          this.page,
+          this.size,
+          this.formInline
+        );
+        this.total = total;
+        this.tableData = rows;
+      } catch (e) {
+        console.log(e.message);
+      }
     },
+    // --------------------------------------------
     // 点击查询方法
-    onSubmit(value) {
-      console.log("submit!");
+    async onSubmit(value) {
+      try {
+        // 查询接口
+        const response = await MemberApi.editMember(this.dialogFormParams);
+        this.dialogFormParams = response;
+        console.log("submit!");
+      } catch (e) {
+        console.log(e);
+      }
     },
-
+    // --------------------------------------------
     // 新增
-    edit() {
-      this.dialogFormVisible = !this.dialogFormVisible;
-      console.log("edit");
+    async edit() {
+      // 对话框标题切换
+      this.id = 2;
+      if (this.id == 2) {
+        try {
+          // 对话框显示隐藏
+          this.dialogFormVisible = !this.dialogFormVisible;
+          console.log("edit");
+          // 新增数据 参数是input 框里的数据
+          const response = await MemberApi.addMember(this.dialogFormParams);
+          // 获取会员列表数据
+          this.getMemberList();
+          // 对话框标题切换
+          this.id = 1;
+        } catch (e) {
+          console.log(e.message);
+        }
+      }
     },
-
+    // --------------------------------------------
     // 重置
     Reset(Reset) {
-      // res定义的数据ResetAll传参
-      this.$refs[Reset].resetFields();
-      // this.$refs[Reset].resetFields();
-      console.log("Reset");
+      try {
+        // res定义的数据ResetAll传参
+        this.$refs[Reset].resetFields();
+        console.log("ResetAll1");
+      } catch (e) {
+        console.log(e.message);
+      }
     },
-
+    // ---------------------------------------------
     // 表格编辑
-    handleEdit(index, row) {
-      console.log("handleEdit", index, row);
+    async handleEdit(index, row) {
+      // 对话框标题切换
+      this.id = 1;
+      if (this.id == 1) {
+        try {
+          // 重新input赋值
+          this.dialogFormParams = row;
+          // 对话框显示隐藏
+          this.dialogFormVisible = !this.dialogFormVisible;
+          // 编辑接口
+          const response = await MemberApi.editMember(row.id, row);
+          // 对话框标题切换
+          this.id = 1;
+        } catch (e) {
+          console.log(e.message);
+        }
+      }
     },
-
+    // -------------------------------------------------
     // 表格刪除
     handleDelete(index, row) {
       console.log("handleDelete", index, row);
+      this.$confirm("你确定要删除这条数据吗？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          // 删除数据
+          const response = await MemberApi.deleteMemberList(row.id);
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+          // 删除后会员列表刷新
+          this.getMemberList();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
+    // -------------------------------------------------
     //  条数
     handleSizeChange(val) {
       this.size = val;
       console.log(`每页 ${val} 条`);
       this.getMemberList();
     },
+    // ---------------------------------------------
     // 页码数
     handleCurrentChange(val) {
       this.page = val;
