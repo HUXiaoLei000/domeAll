@@ -171,11 +171,7 @@ export default {
       },
       // 对话框标题切换
       id: 1,
-      // 对话框
-      form: {
-        name: "",
-        region: "",
-      },
+
       // 对话框宽度
       formLabelWidth: "120px",
       // 对话框的显示隐藏
@@ -210,6 +206,7 @@ export default {
   },
   computed: {},
   created() {
+    console.log(MemberApi.getMemberList);
     // 获取会员列表数据
     this.getMemberList();
   },
@@ -254,7 +251,6 @@ export default {
     // --------------------------------------------
     // 新增
     async edit() {
-      console.log(111111111);
       // 清空对话框内容
       this.Reset("ResetAll1");
       // 对话框标题切换
